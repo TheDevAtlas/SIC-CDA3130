@@ -35,6 +35,8 @@ public class MIPS {
         EditorJFrame.setLocationRelativeTo(null);
         EditorJFrame.setVisible(true);
         
+        // Sets A Text Box To Show Code //
+        // Will Change Later To Create The Steps and Micro Steps //
         EditorJFrame.ChangeCodeText(fileAsString);
     }
     

@@ -4,10 +4,6 @@
  */
 package mips;
 
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
 /**
  *
  * @author jacob
@@ -32,64 +28,22 @@ public class EditorMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         Left = new javax.swing.JPanel();
-        CreatedLabel = new javax.swing.JLabel();
-        AuthorsLabel = new javax.swing.JLabel();
+        StepButton = new javax.swing.JButton();
+        MicroStep = new javax.swing.JButton();
         Right = new javax.swing.JPanel();
         CodeText = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
-        StepButton = new javax.swing.JButton();
-        MicroStep = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
         setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         Left.setBackground(new java.awt.Color(39, 39, 39));
-        Left.setMaximumSize(new java.awt.Dimension(400, 500));
-        Left.setMinimumSize(new java.awt.Dimension(400, 500));
-        Left.setPreferredSize(new java.awt.Dimension(400, 500));
-
-        CreatedLabel.setBackground(new java.awt.Color(241, 241, 241));
-        CreatedLabel.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        CreatedLabel.setForeground(new java.awt.Color(241, 241, 241));
-        CreatedLabel.setText("Created By:");
-
-        AuthorsLabel.setBackground(new java.awt.Color(241, 241, 241));
-        AuthorsLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        AuthorsLabel.setForeground(new java.awt.Color(241, 241, 241));
-        AuthorsLabel.setText("<html>Selma Eklund<br>Natalie Spiro<br>Jacob McGowan<br>Jacob Vorndran<html>");
-
-        javax.swing.GroupLayout LeftLayout = new javax.swing.GroupLayout(Left);
-        Left.setLayout(LeftLayout);
-        LeftLayout.setHorizontalGroup(
-            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LeftLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CreatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AuthorsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(263, Short.MAX_VALUE))
-        );
-        LeftLayout.setVerticalGroup(
-            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LeftLayout.createSequentialGroup()
-                .addContainerGap(369, Short.MAX_VALUE)
-                .addComponent(CreatedLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AuthorsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-        );
-
-        getContentPane().add(Left);
-
-        Right.setBackground(new java.awt.Color(241, 241, 241));
-        Right.setMaximumSize(new java.awt.Dimension(400, 500));
-        Right.setMinimumSize(new java.awt.Dimension(400, 500));
-
-        jTextPane1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        jTextPane1.setMinimumSize(new java.awt.Dimension(60, 20));
-        CodeText.setViewportView(jTextPane1);
+        Left.setMaximumSize(new java.awt.Dimension(200, 500));
+        Left.setMinimumSize(new java.awt.Dimension(200, 500));
+        Left.setPreferredSize(new java.awt.Dimension(200, 500));
 
         StepButton.setText("Step");
         StepButton.addActionListener(new java.awt.event.ActionListener() {
@@ -100,30 +54,53 @@ public class EditorMenu extends javax.swing.JFrame {
 
         MicroStep.setText("Micro Step");
 
+        javax.swing.GroupLayout LeftLayout = new javax.swing.GroupLayout(Left);
+        Left.setLayout(LeftLayout);
+        LeftLayout.setHorizontalGroup(
+            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LeftLayout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(StepButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MicroStep)
+                .addGap(18, 18, 18))
+        );
+        LeftLayout.setVerticalGroup(
+            LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LeftLayout.createSequentialGroup()
+                .addContainerGap(449, Short.MAX_VALUE)
+                .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StepButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MicroStep, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
+        );
+
+        getContentPane().add(Left);
+
+        Right.setBackground(new java.awt.Color(241, 241, 241));
+        Right.setMaximumSize(new java.awt.Dimension(600, 500));
+        Right.setMinimumSize(new java.awt.Dimension(600, 500));
+        Right.setPreferredSize(new java.awt.Dimension(600, 500));
+
+        jTextPane1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        jTextPane1.setMinimumSize(new java.awt.Dimension(60, 20));
+        CodeText.setViewportView(jTextPane1);
+
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
         RightLayout.setHorizontalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RightLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(RightLayout.createSequentialGroup()
-                        .addComponent(StepButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(MicroStep))
-                    .addComponent(CodeText, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addComponent(CodeText, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         RightLayout.setVerticalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RightLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(CodeText, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(StepButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(MicroStep, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RightLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(CodeText, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
 
         getContentPane().add(Right);
@@ -170,9 +147,7 @@ public class EditorMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AuthorsLabel;
     private javax.swing.JScrollPane CodeText;
-    private javax.swing.JLabel CreatedLabel;
     private javax.swing.JPanel Left;
     private javax.swing.JButton MicroStep;
     private javax.swing.JPanel Right;
