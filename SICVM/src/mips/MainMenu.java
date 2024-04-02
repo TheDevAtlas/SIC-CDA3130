@@ -232,6 +232,9 @@ public class MainMenu extends javax.swing.JFrame {
             
             String line = reader.readLine();
             
+            Decoder decoder = new Decoder();
+            decoder.decode(file);
+
             while(line!=null)
             {
                 System.out.print(line);
