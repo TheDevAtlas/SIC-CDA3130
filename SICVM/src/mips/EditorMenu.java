@@ -4,10 +4,6 @@
  */
 package mips;
 
-/**
- *
- * @author jacob
- */
 public class EditorMenu extends javax.swing.JFrame {
 
     /**

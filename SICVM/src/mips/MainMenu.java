@@ -14,10 +14,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-/**
- *
- * @author jacob
- */
 public class MainMenu extends javax.swing.JFrame {
 
     /**
