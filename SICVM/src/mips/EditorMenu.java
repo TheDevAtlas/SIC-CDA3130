@@ -110,7 +110,11 @@ public class EditorMenu extends javax.swing.JFrame {
     private void StepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepButtonActionPerformed
         // TODO add your handling code here:
         
-        System.out.println(stream.toArray()[CPU.pc / 4]);
+        Instruction cmd = (Instruction)stream.toArray()[CPU.pc / 4];
+        
+        System.out.println(cmd.binary);
+        
+        
         
         CPU.pc += 4;
         System.out.println(CPU.pc);
