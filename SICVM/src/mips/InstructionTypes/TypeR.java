@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public class TypeR extends Instruction {
   
-  int $rs;
-  int $rt;
-  int $rd;
+  String $rs;
+  String $rt;
+  String $rd;
   int shamt;
   String funct;
   int code;
@@ -45,13 +45,15 @@ public class TypeR extends Instruction {
     functs.put(42, "slt");
     functs.put(43, "sltu");
 
+
+
     parseBinary();
   }
 
   private void parseBinary() {
-    $rs = toDecimal(6,11);
-    $rt = toDecimal(11, 16);
-    $rd = toDecimal(16,21 );
+    $rs = parseRegister(toDecimal(6,11));
+    $rt = parseRegister(toDecimal(11, 16));
+    $rd = parseRegister(toDecimal(16,21 ));
     shamt = toDecimal(21, 26);
     code = toDecimal(26,32);
     funct = functs.get(code);
@@ -64,7 +66,7 @@ public class TypeR extends Instruction {
       case 0, 1, 3:
         return funct + " " + $rd + ", " + $rt + ", " + shamt;
       case 4, 6, 7, 32, 33, 34, 35, 36, 37, 38, 39, 42, 43:
-        return funct + " " + $rd + ", " + $rt + ", " + $rs;
+        return funct + " " + $rd + ", " + $rs + ", " + $rt;
       case 8, 9, 17, 19:
         return funct + " " + $rs;
       case 12:

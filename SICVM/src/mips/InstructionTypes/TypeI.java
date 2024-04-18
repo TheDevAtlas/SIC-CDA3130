@@ -6,8 +6,8 @@ public class TypeI extends Instruction {
   
   String funct;
   int code;
-  int $rs;
-  int $rt;
+  String $rs;
+  String $rt;
   int inm;
 
     //move this somewhere to import it in
@@ -44,8 +44,8 @@ public class TypeI extends Instruction {
 
     code = toDecimal(0,6);
     funct = functs.get(code);
-    $rs = toDecimal(6, 11);
-    $rt = toDecimal(11, 16);
+    $rs = parseRegister(toDecimal(6, 11));
+    $rt = parseRegister(toDecimal(11, 16));
     inm = parseSignedInt(binary.substring(16,32));
   }
 
@@ -63,7 +63,7 @@ public class TypeI extends Instruction {
 
     if (code == 6 || code == 7 || code == 15) return funct + " " + $rt + ", " + inm;
     else if (code >= 32) return funct + " " + $rt + ", " + inm + "(" + $rs + ")";  
-   return funct + " " + $rs + ", " + $rt + ", " + inm;
+   return funct + " " + $rt + ", " + $rs + ", " + inm;
   }
   
 }

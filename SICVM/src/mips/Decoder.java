@@ -52,6 +52,7 @@ public class Decoder {
     }
 
     printStream(stream);
+    reader.close();
     return stream;
   }
 
@@ -72,5 +73,5 @@ public class Decoder {
     while( iterator.hasNext()) {
       System.out.println(iterator.next().toString());
     }
-  }
+  } 
 }
