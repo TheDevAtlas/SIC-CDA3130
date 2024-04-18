@@ -8,7 +8,6 @@ public class Instruction {
     this.address = address;
     this.binary = binary;
   }
-
   
   public int toDecimal( int start, int end) {
     return Integer.parseInt(binary.substring(start, end), 2);

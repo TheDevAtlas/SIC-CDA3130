@@ -9,10 +9,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import mips.InstructionTypes.Instruction;
 
 public class MainMenu extends javax.swing.JFrame {
 
@@ -222,6 +224,8 @@ public class MainMenu extends javax.swing.JFrame {
         
         String fileAsString = "";
         
+        LinkedList<Instruction> stream = new LinkedList<>();;
+        
         // Open File And Read Out To A String //
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -229,7 +233,7 @@ public class MainMenu extends javax.swing.JFrame {
             String line = reader.readLine();
             
             Decoder decoder = new Decoder();
-            decoder.decode(file);
+            stream = decoder.decode(file);
 
             while(line!=null)
             {
@@ -248,7 +252,7 @@ public class MainMenu extends javax.swing.JFrame {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        MIPS.OpenMIPSEditor(fileAsString);
+        MIPS.OpenMIPSEditor(fileAsString, stream);
     }//GEN-LAST:event_MipsButtonActionPerformed
 
     private void CheckpointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckpointButtonActionPerformed

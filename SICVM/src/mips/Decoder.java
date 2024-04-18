@@ -14,9 +14,7 @@ import mips.InstructionTypes.TypeJ;
 import mips.InstructionTypes.TypeR;
 
 public class Decoder {
-  
-  File file;
-  
+ 
   public Decoder() {
   }
 
@@ -37,18 +35,18 @@ public class Decoder {
 
       int type = getType(binary);
       switch(type) {
-        case 0:
-          instruction = new TypeR(address, binary);
-          stream.add(instruction);
-          break;
-        case 1:
-          instruction = new TypeJ(address, binary);
-          stream.add(instruction);
-          break;
-        case 2:
-          instruction = new TypeI(address, binary);
-          stream.add(instruction);
-          break;
+        case 0 -> {
+            instruction = new TypeR(address, binary);
+            stream.add(instruction);
+            }
+        case 1 -> {
+            instruction = new TypeJ(address, binary);
+            stream.add(instruction);
+            }
+        case 2 -> {
+            instruction = new TypeI(address, binary);
+            stream.add(instruction);
+            }
       }
       line = reader.readLine();
     }
