@@ -39,8 +39,6 @@ public class SICVM {
         editor.setLocationRelativeTo(null);
         editor.setVisible(true);
         
-        editor.UpdateRegisterTable();
-        
         // Clean Up Extra Window //
         if(mainMenu != null)
         {
@@ -54,6 +52,8 @@ public class SICVM {
         System.out.print("Open File");
         
         OpenEditor();
+        
+        CPU.UpdateMemoryFromCPU();
     }
     
     // Open Webpage To Manuel //

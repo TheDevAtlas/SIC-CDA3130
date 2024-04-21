@@ -12,6 +12,14 @@ import javax.swing.table.TableColumn;
  */
 public class Editor extends javax.swing.JFrame {
 
+    
+    public enum editorBase
+    {
+        binary,hexidecimal,decimal
+    }
+    
+    public static editorBase globalBase;
+    
     /**
      * Creates new form Editor
      */
@@ -34,14 +42,13 @@ public class Editor extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         Editor = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        ProgramInformation = new javax.swing.JPanel();
-        Memory = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        RegisterTable = new javax.swing.JTable();
         Binary = new javax.swing.JRadioButton();
         Hexadecimal = new javax.swing.JRadioButton();
         Decimal = new javax.swing.JRadioButton();
+        ProgramInformation = new javax.swing.JPanel();
+        MemInputOutput = new javax.swing.JEditorPane();
+        jLabel1 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MIPS Emulator");
@@ -106,74 +113,6 @@ public class Editor extends javax.swing.JFrame {
         Editor.setMaximumSize(new java.awt.Dimension(915, 700));
         Editor.setMinimumSize(new java.awt.Dimension(915, 700));
 
-        jTabbedPane1.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 12)); // NOI18N
-        jTabbedPane1.setMaximumSize(new java.awt.Dimension(880, 400));
-        jTabbedPane1.setMinimumSize(new java.awt.Dimension(880, 400));
-        jTabbedPane1.setPreferredSize(new java.awt.Dimension(880, 400));
-
-        ProgramInformation.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        ProgramInformation.setMaximumSize(new java.awt.Dimension(880, 400));
-        ProgramInformation.setMinimumSize(new java.awt.Dimension(880, 400));
-        ProgramInformation.setPreferredSize(new java.awt.Dimension(880, 400));
-
-        javax.swing.GroupLayout ProgramInformationLayout = new javax.swing.GroupLayout(ProgramInformation);
-        ProgramInformation.setLayout(ProgramInformationLayout);
-        ProgramInformationLayout.setHorizontalGroup(
-            ProgramInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
-        );
-        ProgramInformationLayout.setVerticalGroup(
-            ProgramInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 601, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Program Information", ProgramInformation);
-
-        Memory.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 12)); // NOI18N
-        Memory.setMaximumSize(new java.awt.Dimension(880, 400));
-        Memory.setMinimumSize(new java.awt.Dimension(880, 400));
-        Memory.setPreferredSize(new java.awt.Dimension(880, 400));
-
-        jScrollPane1.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 12)); // NOI18N
-
-        RegisterTable.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 12)); // NOI18N
-        RegisterTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(RegisterTable);
-
-        javax.swing.GroupLayout MemoryLayout = new javax.swing.GroupLayout(Memory);
-        Memory.setLayout(MemoryLayout);
-        MemoryLayout.setHorizontalGroup(
-            MemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MemoryLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        MemoryLayout.setVerticalGroup(
-            MemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MemoryLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Memory", Memory);
-
         Binary.setBackground(new java.awt.Color(66, 61, 63));
         BaseChanger.add(Binary);
         Binary.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -193,6 +132,45 @@ public class Editor extends javax.swing.JFrame {
         Decimal.setForeground(new java.awt.Color(253, 255, 252));
         Decimal.setText("Decimal");
 
+        ProgramInformation.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        ProgramInformation.setMaximumSize(new java.awt.Dimension(880, 400));
+        ProgramInformation.setMinimumSize(new java.awt.Dimension(880, 400));
+        ProgramInformation.setPreferredSize(new java.awt.Dimension(880, 400));
+
+        jLabel1.setFont(new java.awt.Font("Franklin Gothic Medium", 1, 18)); // NOI18N
+        jLabel1.setText("Memory View / Edit");
+
+        jButton4.setText("Update Memory");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ProgramInformationLayout = new javax.swing.GroupLayout(ProgramInformation);
+        ProgramInformation.setLayout(ProgramInformationLayout);
+        ProgramInformationLayout.setHorizontalGroup(
+            ProgramInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProgramInformationLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(ProgramInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(MemInputOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(695, Short.MAX_VALUE))
+        );
+        ProgramInformationLayout.setVerticalGroup(
+            ProgramInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProgramInformationLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(MemInputOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
+        );
+
         javax.swing.GroupLayout EditorLayout = new javax.swing.GroupLayout(Editor);
         Editor.setLayout(EditorLayout);
         EditorLayout.setHorizontalGroup(
@@ -200,16 +178,14 @@ public class Editor extends javax.swing.JFrame {
             .addGroup(EditorLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(EditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProgramInformation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(EditorLayout.createSequentialGroup()
                         .addComponent(Binary)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Hexadecimal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Decimal)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(EditorLayout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))))
+                        .addComponent(Decimal)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         EditorLayout.setVerticalGroup(
             EditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,15 +195,19 @@ public class Editor extends javax.swing.JFrame {
                     .addComponent(Binary)
                     .addComponent(Hexadecimal)
                     .addComponent(Decimal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ProgramInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         getContentPane().add(Editor);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,14 +243,6 @@ public class Editor extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void UpdateRegisterTable()
-    {
-        TableColumn newCol = new TableColumn();
-        RegisterTable.addColumn(newCol);
-        
-        RegisterTable
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BaseChanger;
@@ -279,13 +251,12 @@ public class Editor extends javax.swing.JFrame {
     private javax.swing.JRadioButton Decimal;
     private javax.swing.JPanel Editor;
     private javax.swing.JRadioButton Hexadecimal;
-    private javax.swing.JPanel Memory;
+    public javax.swing.JEditorPane MemInputOutput;
     private javax.swing.JPanel ProgramInformation;
-    private javax.swing.JTable RegisterTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

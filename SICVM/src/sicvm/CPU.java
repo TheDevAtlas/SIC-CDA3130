@@ -198,4 +198,48 @@ public class CPU {
             }
         }  
     }
+    
+    // When The CPU Does Something, Show That On The User Side //
+    public static void UpdateMemoryFromCPU()
+    {
+        String memText = "";
+        
+        memText += "at " + Integer.toHexString(at) + "\n";
+        memText += "v1 " + v1 + "\n";
+        memText += "v0 " + v0 + "\n";
+        memText += "a0 " + a0 + "\n";
+        memText += "a1 " + a1 + "\n";
+        memText += "a2 " + a2 + "\n";
+        memText += "a3 " + a3 + "\n";
+        memText += "t0 " + t0 + "\n";
+        memText += "t1 " + t1 + "\n";
+        memText += "t2 " + t2 + "\n";
+        memText += "t3 " + t3 + "\n";
+        memText += "t4 " + t4 + "\n";
+        memText += "t5 " + t5 + "\n";
+        memText += "t6 " + t6 + "\n";
+        memText += "t7 " + t7 + "\n";
+        memText += "s0 " + s0 + "\n";
+        memText += "s1 " + s1 + "\n";
+        memText += "s2 " + s2 + "\n";
+        memText += "s3 " + s3 + "\n";
+        memText += "s4 " + s4 + "\n";
+        memText += "s5 " + s5 + "\n";
+        memText += "s6 " + s6 + "\n";
+        memText += "s7 " + s7 + "\n";
+        memText += "t8 " + t8 + "\n";
+        memText += "t9 " + t9 + "\n";
+        memText += "gp " + gp + "\n";
+        memText += "sp " + sp + "\n";
+        memText += "fp " + fp + "\n";
+        memText += "ra " + ra + "\n";
+        
+        SICVM.editor.MemInputOutput.setText(memText);
+    }
+    
+    // When The User Does Something, Change The CPU To Do That //
+    public void UpdateCPUFromMemory()
+    {
+        
+    }
 }
