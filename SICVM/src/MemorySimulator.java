@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 public class MemorySimulator extends JFrame {
-    private JTextArea memoryDisplay, registerDisplay;
+    private JTextArea memoryDisplay, registerDisplay, microStepLogDisplay;
     private TreeMap<Integer, String> memory = new TreeMap<>();
     private JButton stepButton, microstepButton, loadFileButton, toggleDisplayButton;
     private boolean displayInHex = true;  // Default display mode is hexadecimal
@@ -15,7 +15,7 @@ public class MemorySimulator extends JFrame {
     private int currentAddress = 0;
     private int currentLine = 0; // To keep track of the current line
     private TreeMap<Integer, Pair<String, Long>> cache = new TreeMap<>();
-    private static int CACHE_SIZE = 4;
+    private static int CACHE_SIZE = 5;
     private JTextArea cacheDisplay;
     private int[] registers = new int[32];
     private int pc = 0;
@@ -56,6 +56,10 @@ public class MemorySimulator extends JFrame {
         cacheDisplay = new JTextArea();
         cacheDisplay.setEditable(false);
         add(new JScrollPane(cacheDisplay));
+
+        microStepLogDisplay = new JTextArea();
+        microStepLogDisplay.setEditable(false);
+        add(new JScrollPane(microStepLogDisplay));
 
         JPanel buttonPanel = new JPanel();
         stepButton = new JButton("Step");
@@ -144,6 +148,7 @@ public class MemorySimulator extends JFrame {
             if (!memory.isEmpty()) {
                 currentAddress = memory.firstKey();
             }
+            pc = currentAddress;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -178,29 +183,77 @@ public class MemorySimulator extends JFrame {
         if (memory.containsKey(currentAddress)) {
             String binaryString = getFromCacheOrMemory(currentAddress);
             executeOperation(binaryString);
+            System.out.println("Current address: " + currentAddress);
+            System.out.println("Current PC: " + pc);
+            pc += 4;
+            currentAddress = pc;
             Integer nextAddress = memory.higherKey(currentAddress);
-            if (nextAddress != null) {
-                currentAddress = nextAddress;
-            } else {
-                JOptionPane.showMessageDialog(this, "Reached the end of memory.", "Step Info", JOptionPane.INFORMATION_MESSAGE);
-            }
+//            if (nextAddress != null) {
+//                currentAddress = nextAddress;
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Reached the end of memory.", "Step Info", JOptionPane.INFORMATION_MESSAGE);
+//            }
         } else {
-            JOptionPane.showMessageDialog(this, "End of memory or invalid address", "Step Info", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "End of program or invalid address", "Step Info", JOptionPane.ERROR_MESSAGE);
         }
         currentLine = memory.headMap(currentAddress).size();
         updateMemoryDisplay();
         updateRegisterDisplay();
     }
 
+    private enum MicrostepState {
+        IF, ID, EX, MEM, WB, DONE
+    }
+
+    private MicrostepState currentMicrostep = MicrostepState.IF;
+    private String currentBitstring;
+    private String nextOpcode;
+
     private void microstep(ActionEvent e) {
         if (memory.containsKey(currentAddress)) {
-            String binaryString = getFromCacheOrMemory(currentAddress);
-            System.out.println("Microstepping operation at address: " + currentAddress + " with data: " + binaryString);
+            switch (currentMicrostep) {
+                case IF:
+                    currentBitstring = getFromCacheOrMemory(currentAddress);
+                    microStepLogDisplay.append("Instruction Fetch operation at address: " + currentAddress + " with data: " + currentBitstring + "\n");
+                    nextOpcode = currentBitstring.substring(0, 6);
+                    currentMicrostep = MicrostepState.ID;
+                    break;
+                case ID:
+                    microStepLogDisplay.append("Instruction Decode operation at address: " + currentAddress + " with data: " + currentBitstring + "\n");
+                    currentMicrostep = MicrostepState.EX;
+                    break;
+                case EX:
+                    microStepLogDisplay.append("Execute operation at address: " + currentAddress + " with data: " + currentBitstring + "\n");
+                    executeOperation(currentBitstring);
+                    currentMicrostep = MicrostepState.MEM;
+                    break;
+                case MEM:
+                    if (nextOpcode.equals("100011") || nextOpcode.equals("101011")) {
+                        microStepLogDisplay.append("Memory Access operation at address: " + currentAddress + " with data: " + currentBitstring + "\n");
+                    }
+                    currentMicrostep = MicrostepState.WB;
+                    break;
+                case WB:
+                    microStepLogDisplay.append("Write Back operation at address: " + currentAddress + " with data: " + currentBitstring + "\n");
+                    currentMicrostep = MicrostepState.DONE;
+                    break;
+                case DONE:
+                    Integer nextAddress = memory.higherKey(currentAddress);
+                    if (nextAddress != null) {
+                        currentAddress = nextAddress;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Reached end of memory.", "Microstep Info", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    currentMicrostep = MicrostepState.IF;
+                    break;
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "End of memory or invalid address", "Microstep Info", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "End of memory or invalid address", "Microstep Info", JOptionPane.ERROR_MESSAGE);
         }
         currentLine = memory.headMap(currentAddress).size();
         updateMemoryDisplay();
+        updateRegisterDisplay();
+        updateCacheDisplay();
     }
 
     private void executeOperation(String binaryData) {
@@ -271,23 +324,23 @@ public class MemorySimulator extends JFrame {
                 break;
             case "000100": // BEQ
                 if (registers[rs] == registers[rt]) {
-                    pc += 4 + (immediate << 2);
+                    pc += 4 + (immediate << 2) - 4;
                 }
                 operationLogDisplay.append("Executing BEQ operation: " + binaryData + "\n");
                 break;
             case "000101": // BNE
                 if (registers[rs] != registers[rt]) {
-                    pc += 4 + (immediate << 2);
+                    pc += 4 + (immediate << 2) - 4;
                 }
                 operationLogDisplay.append("Executing BNE operation: " + binaryData + "\n");
                 break;
             case "000010": // JUMP (J)
-                pc = (Integer.parseInt(binaryData.substring(6), 2) << 2);
+                pc = (Integer.parseInt(binaryData.substring(6), 2) << 2) - 4;
                 operationLogDisplay.append("Executing JUMP operation: " + binaryData + "\n");
                 break;
             case "000011": // JAL (Jump and Link)
-                registers[31] = pc + 8; // assuming 31 is the link register
-                pc = (pc & 0xF0000000) | ((Integer.parseInt(binaryData.substring(6), 2) << 2));
+                registers[31] = pc + 8;
+                pc = (pc & 0xF0000000) | ((Integer.parseInt(binaryData.substring(6), 2) << 2)) - 4;
                 operationLogDisplay.append("Executing JAL operation: " + binaryData + "\n");
                 break;
             default:
