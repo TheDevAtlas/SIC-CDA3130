@@ -60,6 +60,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
         DFA dfa = new DFA();
         HashMap<String, Integer> stateMap = new HashMap<>(); // Map to track unique state paths
@@ -176,9 +177,11 @@ public class Main {
             xmlBuilder.append("\t\t\t<y>").append(state.y).append("</y>\n");
             if (state.initialState) {
                 xmlBuilder.append("\t\t\t<initial/>\n");
+                xmlBuilder.append("\t\t\t<final/>\n"); /// <<<< this was killing me!!!!!!!
+                // initial state needs to be herer so that I can handle the empty string, aaaaaaaaaa
             }
             if (state.finalState) {
-                xmlBuilder.append("\t\t\t<final/>\n"); // Correctly mark final state
+                xmlBuilder.append("\t\t\t<final/>\n"); // Correctly mark final state // TODO - not working on initial
             }
             xmlBuilder.append("\t\t</state>\n");
         }
